@@ -14,8 +14,17 @@ for i = 1:length(voice_folder)
     saveas(h,fullfile('images',file_name));
 end
 
-%Step 3: 
+%Step 3: fucntions to detect gender of a voice
 
+% A function that gets the address of a file and then returns the peak
+% value of the input voice address
+function peak = peak_detector(file_address)
+    [voice,fs] = audioread(file_address);
+    voice_X = fft(voice);
+    power_specturm_density = abs(voice_X).^2;
+    hz = linspace(0, 1000, fs/2 + 1);
+    [peak_y, peak_x] = max(power_specturm_density(0:length(hz)));
+end
 
 
  
