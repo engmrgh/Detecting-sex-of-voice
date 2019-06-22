@@ -26,7 +26,27 @@ function peak = peak_detector(file_address)
     [peak_y, peak_x] = max(power_specturm_density(0:length(hz)));
 end
 
-function detector(
+% This function is supposed to detect the gender of the voices passed to 
+% it using peak_detector function. If the peak was between 50 and 180 the 
+% voice is said to be of men and If the peak was between 165 and 255 the
+% voice is said to be of women otherwise it says that it couldn't
+% understand the gender of the voice
+function genderdetector(folder_address)
+    voice_folder = dir(fullfile(folder_address,'*.mp3')); % The folder in which the voice files has been saved
+    fileID = fopen('labeled voices.txt','a');
+    for i = 1:length(voice_folder)
+        peak = peak_detector(fullfile(folder_address,voice_folder(i).name));
+        if (peak <= 180 && peak >= 50)
+            label = fullfile(folder_address,voice_folder(i).name) + ' male';
+        elseif(peak >= 165 && peak <= 255)
+            label = fullfile(folder_address,voice_folder(i).name) + 'female';
+        else 
+            label = fullfile(folder_address,voice_folder(i).name) + ' not detected';
+        end
+        fprintf(fileID, '%f \n',label);
+    end
+end
+
 
 
  
